@@ -57,33 +57,33 @@ const Login = () => {
 
   }
 
-  const handleClose = () => {
-    signOut(auth)
-    .then(() => {
-      console.log('close sesion');
-    })
-    .catch((err)=>{
-      console.log(err)
-    })
-  }
+  // const handleClose = () => {
+  //   signOut(auth)
+  //   .then(() => {
+  //     console.log('close sesion');
+  //   })
+  //   .catch((err)=>{
+  //     console.log(err)
+  //   })
+  // }
 
-  useEffect(()=>{
-   onAuthStateChanged(auth, (data)=>{
+  // useEffect(()=>{
+  //  onAuthStateChanged(auth, (data)=>{
 
-    if(data){
-      const obteniendoUser = async () =>{
-       setUser(data.displayName)
-       setEmail(data.email)
-       setPhoto(data.photoURL)
-       setToken(data.accessToken)
-      }
-      obteniendoUser()
-    }else{
-      console.log('no hay usuario')
-    }
+  //   if(data){
+  //     const obteniendoUser = async () =>{
+  //      setUser(data.displayName)
+  //      setEmail(data.email)
+  //      setPhoto(data.photoURL)
+  //      setToken(data.accessToken)
+  //     }
+  //     obteniendoUser()
+  //   }else{
+  //     console.log('no hay usuario')
+  //   }
 
-   });
-   },[])
+  //  });
+  //  },[])
 
   return (
     <div className={styles.login}>
@@ -95,7 +95,7 @@ const Login = () => {
           <input type="password" placeholder='Repeart your password' name='password2'/>
         </form>
         <GoogleButton onClick={signInWithGoogle}/>
-        <button onClick={handleClose}>Close</button>
+        {/* <button onClick={handleClose}>Close</button> */}
       </div>
     </div>
   )
