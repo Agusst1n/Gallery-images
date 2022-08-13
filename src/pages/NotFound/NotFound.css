@@ -1,0 +1,41 @@
+.NotFound-Content {
+  width: 100%;
+  margin: 5rem auto;
+  padding: 1rem 0;
+  background-color: #000;
+  box-sizing: border-box;
+}
+.contents {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 1rem 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  text-align: center;
+  background-color: black;
+}
+
+.contents .title {
+  font-size: 1.5rem;
+  letter-spacing: 0.1rem;
+  font-weight: 700;
+  color: #dee4ea;
+}
+.contents p {
+  font-size: 1rem;
+  letter-spacing: 0.1rem;
+  font-weight: 200;
+  color: #dee4ea;
+}
+.contents a {
+  padding: 0.5rem;
+  color: #dee4ea;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  letter-spacing: 0.1rem;
+  font-weight: 700;
+  background-color: #21262d;
+}
+.contents a:hover {
+  color: #58a6ff;
+}

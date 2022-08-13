@@ -3,8 +3,13 @@ import React, { useContext, useEffect, useState } from 'react'
 /**
  * Google
  */
-import { auth } from '../../firebaseConfig'
-import {signInWithPopup, GoogleAuthProvider, onAuthStateChanged ,signOut} from 'firebase/auth'
+import { auth } from 'firebaseConfig'
+import {
+  signInWithPopup,
+  GoogleAuthProvider,
+  onAuthStateChanged,
+  signOut,
+} from 'firebase/auth'
 import GoogleButton from 'react-google-button'
 
 /**
@@ -15,31 +20,28 @@ import styles from './Login.module.css'
 /**
  * Context
  */
-import LoginContext from '../../context/LoginContext'
+import LoginContext from 'context/LoginContext'
 
 /**
  * React royter dom
  */
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { async } from '@firebase/util'
 
 const Login = () => {
-
   // const [user, setUser] = useState('')
   // const [email, setEmail] = useState('')
   // const [photo, setPhoto] = useState('')
   // const [token, setToken] = useState('')
   const navigate = useNavigate()
 
-  const {setUser,setEmail,setPhoto,setToken} = useContext(LoginContext)
+  const { setUser, setEmail, setPhoto, setToken } = useContext(LoginContext)
 
- 
-  const signInWithGoogle = () =>{
-
+  const signInWithGoogle = () => {
     const provider = new GoogleAuthProvider()
 
     signInWithPopup(auth, provider)
-    .then((res)=>{
+      .then((res) => {
         setUser(res.user.displayName)
         setEmail(res.user.email)
         setPhoto(res.user.photoURL)
@@ -50,11 +52,10 @@ const Login = () => {
         navigate('/home')
 
         console.log(res)
-    })
-    .catch((err)=>{
-        console.log(err);
-    })
-
+      })
+      .catch((err) => {
+        console.log(err)
+      })
   }
 
   // const handleClose = () => {
@@ -89,12 +90,16 @@ const Login = () => {
     <div className={styles.login}>
       <div className={styles.form_container}>
         <form className={styles.form}>
-          <input type="text" placeholder='User' name='user'/>
-          <input type="email" placeholder='Email' name='email'/>
-          <input type="password" placeholder='Password' name='password'/>
-          <input type="password" placeholder='Repeart your password' name='password2'/>
+          <input type='text' placeholder='User' name='user' />
+          <input type='email' placeholder='Email' name='email' />
+          <input type='password' placeholder='Password' name='password' />
+          <input
+            type='password'
+            placeholder='Repeart your password'
+            name='password2'
+          />
         </form>
-        <GoogleButton onClick={signInWithGoogle}/>
+        <GoogleButton onClick={signInWithGoogle} />
         {/* <button onClick={handleClose}>Close</button> */}
       </div>
     </div>
