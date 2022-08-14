@@ -1,15 +1,9 @@
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 
 /**
  * Google
  */
-import { auth } from 'firebaseConfig'
-import {
-  signInWithPopup,
-  GoogleAuthProvider,
-  onAuthStateChanged,
-  signOut,
-} from 'firebase/auth'
+
 import GoogleButton from 'react-google-button'
 
 /**
@@ -25,81 +19,56 @@ import LoginContext from 'context/LoginContext'
 /**
  * React royter dom
  */
-import { useNavigate } from 'react-router-dom'
-import { async } from '@firebase/util'
+import { useNavigate, Link } from 'react-router-dom'
+import { logInWithGoogle } from 'firebaseData/GoogleProvider'
+import { lognInWithEmailandPassword } from 'firebaseData/GoogleProvider'
 
 const Login = () => {
-  // const [user, setUser] = useState('')
-  // const [email, setEmail] = useState('')
-  // const [photo, setPhoto] = useState('')
-  // const [token, setToken] = useState('')
   const navigate = useNavigate()
+  const email = useRef()
+  const password = useRef()
+  const { setLoginUser } = useContext(LoginContext)
 
-  const { setUser, setEmail, setPhoto, setToken } = useContext(LoginContext)
+  const signInWithBtnGoogle = async () => {
+    const { status, user } = await logInWithGoogle()
+    console.log({ status, user })
 
-  const signInWithGoogle = () => {
-    const provider = new GoogleAuthProvider()
-
-    signInWithPopup(auth, provider)
-      .then((res) => {
-        setUser(res.user.displayName)
-        setEmail(res.user.email)
-        setPhoto(res.user.photoURL)
-        setToken(res.user.accessToken)
-
-        localStorage.setItem('token', res.user.accessToken)
-
-        navigate('/home')
-
-        console.log(res)
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+    if (status === 200) {
+      localStorage.setItem('token', user.accessToken)
+      setLoginUser(user)
+      navigate('/home')
+    }
   }
 
-  // const handleClose = () => {
-  //   signOut(auth)
-  //   .then(() => {
-  //     console.log('close sesion');
-  //   })
-  //   .catch((err)=>{
-  //     console.log(err)
-  //   })
-  // }
-
-  // useEffect(()=>{
-  //  onAuthStateChanged(auth, (data)=>{
-
-  //   if(data){
-  //     const obteniendoUser = async () =>{
-  //      setUser(data.displayName)
-  //      setEmail(data.email)
-  //      setPhoto(data.photoURL)
-  //      setToken(data.accessToken)
-  //     }
-  //     obteniendoUser()
-  //   }else{
-  //     console.log('no hay usuario')
-  //   }
-
-  //  });
-  //  },[])
+  const loginWithEmail = async (e) => {
+    e.preventDefault()
+    const userToLognIn = {
+      email: email.current.value,
+      password: password.current.value,
+    }
+    const { status, user } = await lognInWithEmailandPassword(userToLognIn)
+    if (status === 200) {
+      localStorage.setItem('token', user.accessToken)
+      setLoginUser(user)
+      navigate('/home')
+    }
+  }
 
   return (
     <div className={styles.login}>
       <div className={styles.form_container}>
         <form className={styles.form}>
-          <input type='text' placeholder='User' name='user' />
-          <input type='email' placeholder='Email' name='email' />
-          <input type='password' placeholder='Password' name='password' />
+          <input type='email' ref={email} placeholder='Email' name='email' />
           <input
             type='password'
-            placeholder='Repeart your password'
-            name='password2'
+            ref={password}
+            placeholder='Password'
+            name='password'
           />
+          <button onClick={loginWithEmail}>Login </button>
+          <Link to='/signin'>Crea una cuenta </Link>
         </form>
-        <GoogleButton onClick={signInWithGoogle} />
+        <GoogleButton onClick={signInWithBtnGoogle} />
         {/* <button onClick={handleClose}>Close</button> */}
       </div>
     </div>

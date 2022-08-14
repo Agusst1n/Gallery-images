@@ -3,30 +3,26 @@ import React, { useContext, useEffect, useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
 
-import { auth } from 'firebaseConfig'
+// import { auth } from 'firebaseConfig'
 
-import { signOut } from 'firebase/auth'
+// import { signOut } from 'firebase/auth'
 
 import styles from './Navbar.module.css'
 
 import avatar from 'assets/images/avatar.jpg'
 import LoginContext from 'context/LoginContext'
+import { signOutSession } from '../../firebaseData/GoogleProvider'
 
 const Navbar = () => {
   let navigate = useNavigate()
 
-  const { user, photo } = useContext(LoginContext)
+  const { user, photo, setSignOutSession } = useContext(LoginContext)
 
-  const handleClose = () => {
-    signOut(auth)
-      .then(() => {
-        console.log('close sesion')
-        navigate('/')
-        return
-      })
-      .catch((err) => {
-        console.log(err)
-      })
+  const handleClose = async () => {
+    const { status } = await signOutSession()
+    if (status === 200) {
+      setSignOutSession()
+    }
   }
 
   return (
